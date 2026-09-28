@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #11151c;
+            color: #f1f4f8;
+            color: #ffffff;
+            line-height: 1.5;
+        }
+
+        main {
+            width: min(760px, calc(100% - 28px));
+            margin: 28px auto;
+        }
+
+        .card {
+            background: #1a2029;
+            background: hsl(161, 97%, 21%);
+            border: 1px solid #343d49;
+            border-radius: 1rem;
+            box-shadow: 0 8px 30px rgba(20, 35, 60, 0.08);
+            padding: clamp(1rem, 4vw, 2rem);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: clamp(1.55rem, 4vw, 2.15rem);
+            line-height: 1.15;
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: 1.15rem;
+        }
+
+        p {
+            margin: 0 0 0.75rem;
+        }
+
+        .intro,
+        .privacy,
+        .hint {
+            color: #aab4c2;
+        }
+        
+        .privacy {
+            margin-top: 1rem;
+            padding: 12px 14px;
+            border: 1px solid #343d49;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 650;
+        }
+
+        small {
+            color: #aab4c2;
+            line-height: 1.35;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 46px;
+            border: 1px solid #343d49;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.7rem;
+            background: #1a2029;
+            color: #f1f4f8;
+            font: inherit;
+        }
+
+        input:focus,
+        select:focus {
+            outline: 3px solid color-mix(in srgb, #82aaff 25%, transparent);
+            border-color: #82aaff;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            min-height: 46px;
+            border: 0;
+            border-radius: 0.6rem;
+            padding: 10px 16px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: rgb(2, 156, 108);
+            background: rgb(193, 220, 49);
+            background: rgb;
+            color: #000000;
+        }
+
+        .primary:hover {
+            background: #9abaff;
+        }
+
+        .secondary {
+            background: transparent;
+            color: #f1f4f8;
+            border: 1px solid #343d49;
+        }
+
+        .error {
+            min-height: 1.4em;
+            margin-top: 0.75rem;
+            color: #ff9c9c;
+            font-weight: 650;
+        }
+
+        .result {
+            display: none;
+            margin-top: 18px;
+            padding: 18px;
+            background: #17271d;
+            border: 1px solid #355c41;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .result.visible {
+            display: block;
+        }
+
+        .code {
+            display: block;
+            margin: 10px 0 4px;
+            font-family: monospace;
+            font-size: clamp(1.55rem, 6vw, 2.35rem);
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            overflow-wrap: anywhere;
+        }
+
+        .result-note {
+            color: #aab4c2;
+            font-size: 0.9rem
+        }
+
+        .rule-list {
+            margin: 0;
+            padding-left: 1.2rem;
+        }
+
+        rule-list-li {
+            margin-bottom: 6px;
+        }
+
+        footer {
+            text-align: center;
+            color: #aab4c2;
+            font-size: 0.82rem;
+            padding: 4px 0 24px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <main>
+        <section class="card">
+            <h1>Persönlichen Teilnehmercode erzeugen</h1>
+            <p class="intro">Dieser Code ermöglicht die Zuordnung Ihrer Antworten über mehrere Befragungszeitpunkte hinweg. Mit denselben Angaben können Sie ihn später erneut erzeugen.</p>
+        <div class="privacy"><strong>Datenschutz:</strong> Die unten eingegebenen Teilinformationen werden nur lokal in Ihrem Browser verarbeitet. Diese Datei enthält keine Netzwerkaufrufe, keine Cookies und keine lokale Speicherung. In die Befragung soll ausschließlich der erzeugte Code übernommen werden.</div>
+        </section>
+
+        <section class="card">
+            <h2>1. Teilinformationen eingeben</h2>
+
+            <div class="grid">
+
+                <div class="field">
+                    <label for="fn2">2. Buchstabe Ihres ersten Vornamens bei Geburt</label>
+                    <input type="text" id="fn2" maxlength="2" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. N">
+                    <small>Beispiel: Anna --- N. Umlaute dürfen als Ä/Ö/Ü oder AE/OE/UE eingegeben werden.</small>
+                </div>
+
+                <div class="field">
+                    <label for="fnLast">Letzter Buchstabe Ihres ersten Vornamens bei Geburt</label>
+                    <input type="text" id="fnLast" maxlength="2" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. A">
+                    <small>Verwenden Sie nur Ihren ersten Vornamen, nicht weitere Vornamen</small>
+                </div>
+
+                <div class="field">
+                    <label for="fnLength">Anzahl der Buchstaben des Vornamens</label>
+                    <input type="number" id="fnLength" min="1" max="40" inputmode="numeric" autocomplete="off" placeholder="z.B. 4">
+                    <small>Leerzeichen und Bindestruche nicht mitzählen; Umlaute zählen als ein Buchstabe.</small>
+                </div>
+
+                <div class="field">
+                    <label for="ln2">2. Buchstabe Ihres Nachnamens bei Geburt</label>
+                    <input type="text" id="ln2" maxlength="2" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. Ü">
+                    <small>Beispiel: Müller --- Ü.</small>
+                </div>
+
+                <div class="field">
+                    <label for="lnLast">Letzter Buchstabe Ihres Nachnamens bei Geburt</label>
+                    <input type="text" id="lnLast" maxlength="2" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. R">
+                    <small>Verwenden Sie den Nachnamen, den Sie bei Ihrer Geburt getragen haben.</small>
+                </div>
+
+                <div class="field">
+                    <label for="lnLength">Anzahl der Buchstaben dieses Nachnamens</label>
+                    <input type="number" id="lnLength" min="1" max="60" inputmode="numeric" autocomplete="off" placeholder="z.B. 6">
+                    <small>Leerzeichen und Bindestruche nicht mitzählen; Umlaute zählen als ein Buchstabe.</small>
+                </div>
+
+                <div class="field">
+                    <label for="birthDay">Tag Ihrer Geburt</label>
+                    <select name="" id="birthDay">
+                        <option value="Bitte wählen"></option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="birthMonth">Monat Iher Geburt</label>
+                    <select name="" id="birthMonth">
+                        <option value="">Bitte wählen</option>
+                        <option value="01">Januar</option>
+                        <option value="02">Februar</option>
+                        <option value="03">März</option>
+                        <option value="04">April</option>
+                        <option value="05">Mai</option>
+                        <option value="06">Juni</option>
+                        <option value="07">Juli</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
+                        <option value="12">Dezember</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="birthYearDigit">LetzteZiffer Ihres Geburtsjahres</label>
+                    <select name="" id="birthYearDigit">
+                        <option value="">Bitte wählen</option>
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                    </select>
+                    <small>Beispiel: 1998 --- 8.</small>
+                </div>
+
+                <div class="field">
+                    <label for="place3">3. Buchstabe Ihres Geburtsortes</label>
+                    <input type="text" id="place3" maxlength="2" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. R">
+                    <small>Beispiel: Nürnberg --- R. Hat der Ort weniger als drei Buchstabe, verwenden Sie bitte den letzten Buchstaben.</small>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="primary" id="generateBtn" type="button"> Teilnehmercode erzeugen</button>
+                <button class="secondary" id="resetBtn" type="button">Eingaben löschen</button>
+            </div>
+
+            <div id="error" class="error" role="alert" aria-live="polite"></div>
+            <div id="result" class="result" role="alert" aria-live="polite">
+                <div>Ihr persönlicher Teilnehmercode lautet:</div>
+                <output id="code" class="code">----</output>
+                <div class="actions" style="justify-content: center; margin-top: 12px;">
+                    <button class="primary" id="copyBtn" type="button">Code kopieren</button>
+                </div>
+                <div id="copyStatus" class="result-note"></div>
+                <p class="result-note">Übertragen Sie ausschließelich diesen Code in die Befragung. Die letzte Stelle dient zusätzlich der Fehlererkennung.</p>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Regeln für spätere Befragungen</h2>
+            <ul class="rule-list">
+                <li>Verwenden Sie bei jedem Messzeitpunkt diesselben Regeln.</li>
+                <li>Bei Doppelnamen werden Leerzeichen und Bindestriche bei der Buchstabenzahl nicht mitgezählt.</li>
+                <li>Ä, Ö und Ü zählen bei der Buchstabenposition und bei der Länge jeweils als ein Buchstabe.</li>
+                <li>Der Code kann jederzeit mit denselben Teilinformationen erneut erzeugt werden.</li>
+            </ul>
+        </section>
+
+        <footer>SGIC-UO v1 - lokale Berechnung - keine Speicherung</footer>
+    </main>
+
+
+    <script>
+        "use strict";
+
+        const STUDY_NAMESPACE = "GAMING-2026-SGIC"
+        const ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const PBKDF2_ITERATIONS = 250000;
+        const $ = (id) => document.getElementById(id)
+
+        for (let day = 1; day <= 31; day++) {
+            const option = document.createElement("option");
+            option.value = String(day).padStart(2, "0");
+            option.textContent = day;
+            $("birthDay").appendChild(option);
+        }
+
+        function normalizeLetter(value) {
+            return value
+                .trim()
+                    .toUpperCase()
+                    .replace(/Ä/g, "AE")
+                    .replace(/Ö/g, "OE")
+                    .replace(/Ü/g, "UE")
+                    .replace(/ß/g, "SS")
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^A-Z]/g, "");
+        }
+
+        function validLetterToken(value) {
+            const n = normalizeLetter(value);
+            return n.length >= 1 && n.length <= 2;
+        }
+
+        function readAndValidate() {
+            const data = {
+                fn2: normalizeLetter($("fn2").value),
+                fnLast: normalizeLetter($("fnLast").value),
+                fnLength: $("fnLength").value.trim(),
+                ln2: normalizeLetter($("ln2").value),
+                lnLast: normalizeLetter($("lnLast").value),
+                lnLength: $("lnLength").value.trim(),
+                birthDay: $("birthDay").value,
+                birthMonth: $("birthMonth").value,
+                birthYearDigit: $("birthYearDigit").value,
+                place3: normalizeLetter($("place3").value)
+            };
+
+            if (!validLetterToken($("fn2").value) ||
+                !validLetterToken($("fnLast").value) ||
+                !validLetterToken($("ln2").value) ||
+                !validLetterToken($("lnLast").value) ||
+                !validLetterToken($("place3").value)) {
+                    throw new Error ("Bitte geben Sie in allen Buchstabenfeldern jeweils genau einen Buchstaben ein.")
+                }
+
+            const fnLength = Number(data.fnLength);
+            const lnLength = Number(data.lnLength);
+
+            if (!Number.isInteger(fnLength) || fnLength < 1 || fnLength > 40) {
+                throw new Error ("Bitte geben Sie eine gültige Buchstabenanzahl für den Vornamen ein.");
+            }
+
+            if (!Number.isInteger(lnLength) || lnLength < 1 || lnLength > 40) {
+                throw new Error ("Bitte geben Sie eine gültige Buchstabenanzahl für den Nachnamen ein.");
+            }
+
+            if (!data.birthDay || !birthMonth || data.birthYearDigit === "") {
+                throw new Error ("Bitte wählen Sie Geburtstag, Geburtsmonat und die letzte Ziffer des Geburtsjahres.");
+            }
+
+            data.fnLength = String(fnLength).padStart(2, "0");
+            data.lnLength = String(lnLength).padStart(2, "0");
+
+            return data;
+        }
+
+        function canonicalString(data) {
+            return [
+                "SGIC-UO-V1",
+                `FN2=${data.fn2}`,
+                `FNL=${data.fnLast}`,
+                `FNN=${data.fnLength}`,
+                `LN2=${data.ln2}`,
+                `LNL=${data.lnLast}`,
+                `LNN=${data.lnLength}`,
+                `BD=${data.birthDay}`,
+                `BM=${data.birthMonth}`,
+                `BY=${data.birthYearDigit}`,
+                `BP3=${data.place3}`,
+            ].join("|");
+        }
+
+        function bytesToBase32(bytes) {
+            let bits = 0;
+            let value = 0;
+            let output = "";
+
+            for (const byte of bytes) {
+                value = (value << 8) | byte;
+                bits += 8;
+
+                while (bits >= 5) {
+                    output += ALPHABET[(value >>> (bits - 5)) & 31];
+                    bits -= 5;
+                }
+            }
+
+            if (bits > 0) {
+                output += ALPHABET[(value << (5 - bits)) & 31];
+            }
+
+            return output;
+        }
+
+        function checksumChar(payload) {
+            let acc = 0;
+            for (let i = 0; i < payload.length; i++) {
+                const v = ALPHABET.indexOf(payload[i]);
+                acc = (acc + (i + 3) * v) % 32;
+            }
+            return ALPHABET[acc];
+        }
+
+        function formatCode(raw12) {
+            return raw12.match(/.{1,4}/g).join("-");
+        }
+
+        async function deriveParticipantCode(data) {
+            if (!window.crypto || !window.crypto.subtle) {
+                throw new Error("Ihr Browser untersützt die benötigte lokale Verschlüsselungsfunktion nicht. Bitte verwenden Sie einen aktuellen Browser über HTTPS.");
+            }
+
+            const enc = new TextEncoder();
+            const input = canonicalString(data);
+
+            const keyMaterial = await crypto.subtle
+                .importKey(
+                    "raw",
+                    enc.encode(input),
+                    "PBKDF2",
+                    false,
+                    ["deriveBits"]
+                );
+                
+            const bits = await crypto.subtle.deriveBits(
+                {
+                    name: "PBKDF2",
+                    hash: "SHA-256",
+                    salt: enc.encode(`${STUDY_NAMESPACE} | LOCAL-SGIC`),
+                    iterations: PBKDF2_ITERATIONS
+                },
+                keyMaterial,
+                64
+            );
+
+            const base32 = bytesToBase32(new Uint8Array(bits));
+
+            const payload = base32.slice(0, 11);
+            const check = checksumChar(payload);
+
+            return formatCode(payload + check);
+        }
+
+        $("generateBtn").addEventListener("click", async () => {
+            $("error").textContent = "";
+            $("copyStatus").textContent = "";
+            $("result").classList.remove("visible");
+            $("generateBtn").disabled = true;
+            $("generateBtn").textContent = "Code wird erzeugt ...";
+
+            try {
+                const data = readAndValidate();
+                const code = await deriveParticipantCode(data);
+
+                $("code").textContent = code;
+                $("result").classList.add("visible");
+                $("result").scrollIntoView({ behavior: "smooth", block: "nearest"});
+                } catch (err) {
+                    $("error").textContent = err.message || "Der Code konnte nicht erzeugt werden."
+                } finally {
+                    $("generateBtn").disabled = false;
+                    $("generateBtn").textContent = "Teilnehmercode erzeugen";
+                }
+            });
+
+            $("copyBtn").addEventListener("click", async () => {
+                const code = $("code").textContent;
+
+                try {
+                    await navigator.clipboard.writeText(code);
+                    $("copyStatus").textContent = "Code wurde kopiert";
+                } catch {
+                    const area = document.createElement("textarea");
+                    area.value = code;
+                    area.style.position = "fixed";
+                    are.style.opacity = "0";
+                    document.execCommand("copy");
+                    area.remove();
+                    $("copyStatus").textContent = "Code wurde kopiert.";
+                }
+            });
+
+            $("resetBtn").addEventListener("click", () => {
+                [
+                    "fn2", "fnLast", "fnLength",
+                    "ln2", "lnLast", "lnLength",
+                    "birthDay", "birthMonth", "birthYearDigit",
+                    "place3"
+                ].forEach((id) => {
+                    const el = $(id);
+                    el.value = "";
+                });
+                
+                $("error").textContent = "";
+                $("copyStatus").textContent = "";
+                $("code").textContent = "----";
+                $("result").classList.remove = ("visible");
+                $("fn2").focus();
+            });
+
+
+
+    </script>
+
+</body>
+</html>
