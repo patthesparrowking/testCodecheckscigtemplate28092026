@@ -95,7 +95,7 @@
             border-radius: 0.5rem;
             padding: 0.5rem 0.7rem;
             background: #f1f4f8;
-            color: #355c41
+            color: #355c41;
             font: inherit;
         }
 
@@ -124,19 +124,24 @@
 
         .primary {
             background: rgb(2, 156, 108);
-            background: rgb(193, 220, 49);
             background: rgb;
             color: #000000;
         }
 
-        .primary:hover {
-            background: #9abaff;
+        .primary:hover,
+        .secondary:hover {
+            background: rgb(193, 220, 49);
         }
 
         .secondary {
             background: transparent;
             color: hsl(214, 33%, 86%);
             border: 1px solid hsl(214, 33%, 86%);
+        }
+
+        .secondary:hover {
+            background: rgb(193, 220, 49);
+            color: #1a2029;
         }
 
         .error {
@@ -202,7 +207,7 @@
                 <div class="field">
                     <label for="fn2">Zweiter Buchstabe Ihres ersten Vornamens bei Geburt</label>
                     <input type="text" id="fn2" maxlength="2" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. N">
-                    <small>Beispiel: Anna --- N. Umlaute dürfen als Ä/Ö/Ü oder AE/OE/UE eingegeben werden.</small>
+                    <small>Beispiel: Anna &#8594; N. Umlaute dürfen als Ä/Ö/Ü oder AE/OE/UE eingegeben werden.</small>
                 </div>
 
                 <div class="field">
@@ -214,13 +219,13 @@
                 <div class="field">
                     <label for="fnLength">Anzahl der Buchstaben des Vornamens</label>
                     <input type="number" id="fnLength" min="1" max="40" inputmode="numeric" autocomplete="off" placeholder="z.B. 4">
-                    <small>Leerzeichen und Bindestruche nicht mitzählen; Umlaute zählen als ein Buchstabe.</small>
+                    <small>Leerzeichen und Bindestriche nicht mitzählen; Umlaute zählen als ein Buchstabe.</small>
                 </div>
 
                 <div class="field">
                     <label for="ln2">Zweiter Buchstabe Ihres Nachnamens bei Geburt</label>
                     <input type="text" id="ln2" maxlength="2" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. Ü">
-                    <small>Beispiel: Müller --- Ü.</small>
+                    <small>Beispiel: Müller &#8594; Ü.</small>
                 </div>
 
                 <div class="field">
@@ -232,7 +237,7 @@
                 <div class="field">
                     <label for="lnLength">Anzahl der Buchstaben dieses Nachnamens</label>
                     <input type="number" id="lnLength" min="1" max="60" inputmode="numeric" autocomplete="off" placeholder="z.B. 6">
-                    <small>Leerzeichen und Bindestruche nicht mitzählen; Umlaute zählen als ein Buchstabe.</small>
+                    <small>Leerzeichen und Bindestriche nicht mitzählen; Umlaute zählen als ein Buchstabe.</small>
                 </div>
 
                 <div class="field">
@@ -276,13 +281,13 @@
                         <option>8</option>
                         <option>9</option>
                     </select>
-                    <small>Beispiel: 1998 --- 8.</small>
+                    <small>Beispiel: 1998 &#8594; 8.</small>
                 </div>
 
                 <div class="field">
                     <label for="place3">3. Buchstabe Ihres Geburtsortes</label>
                     <input type="text" id="place3" maxlength="2" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z.B. R">
-                    <small>Beispiel: Nürnberg --- R. Hat der Ort weniger als drei Buchstabe, verwenden Sie bitte den letzten Buchstaben.</small>
+                    <small>Beispiel: Nürnberg &#8594; R. Hat der Ort weniger als drei Buchstabe, verwenden Sie bitte den letzten Buchstaben.</small>
                 </div>
             </div>
 
@@ -520,7 +525,7 @@
                 
                 $("error").textContent = "";
                 $("copyStatus").textContent = "";
-                $("code").textContent = "----";
+                $("code").textContent = "&#8594;-";
                 $("result").classList.remove = ("visible");
                 $("fn2").focus();
             });
